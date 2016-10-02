@@ -1,0 +1,2 @@
+chords.js: chords.cpp
+	emcc --bind chords.cpp -D USE_KISS_FFT -I vendor/Chord-Detector-and-Chromagram/src vendor/Chord-Detector-and-Chromagram/src/*.o -I vendor/Chord-Detector-and-Chromagram/libs/kiss_fft130 vendor/Chord-Detector-and-Chromagram/libs/kiss_fft130/*.o -o chords.js

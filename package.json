@@ -1,0 +1,24 @@
+{
+  "name": "chord_detector",
+  "version": "1.0.0",
+  "description": "Detect chords in audio streams",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/myers/chord_detector.git"
+  },
+  "keywords": [
+    "music",
+    "chords",
+    "guitar"
+  ],
+  "author": "Myers Carpenter <myers@maski.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/myers/chord_detector/issues"
+  },
+  "homepage": "https://github.com/myers/chord_detector#readme"
+}
