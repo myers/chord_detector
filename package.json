@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/myers/chord_detector/issues"
   },
-  "homepage": "https://github.com/myers/chord_detector#readme"
+  "homepage": "https://github.com/myers/chord_detector#readme",
+  "devDependencies": {
+    "speaker": "^0.3.0",
+    "web-audio-api": "^0.2.2"
+  }
 }
