@@ -9,11 +9,12 @@ This is a javascript wrapper that uses [Emscripten] to wrap [Adam Stark]'s [Chor
  [Chromagram]: https://en.wikipedia.org/wiki/Chroma_feature
  [Adam Stark]: https://github.com/adamstark
  [Chord-Detector-and-Chromagram]: https://github.com/adamstark/Chord-Detector-and-Chromagram
+ [Emscripten]: http://kripken.github.io/emscripten-site/
 
 # Building
 
 ```bash
-git submodule update --init # pull in required
+git submodule update --init # pull in Chord-Detector-and-Chromagram
 npm run build # requires emscripten's emcc to be on your path
 ```
 # Demo
