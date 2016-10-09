@@ -1,10 +1,15 @@
+const cd = require("../index.js")
+
 $(function() {
+
+  $('audio').on('play', (event) => { console.log("here") })
+
   const audioCtx = new AudioContext();
 
   const scriptNode = audioCtx.createScriptProcessor(1024, 1, 1);
 
-  const chromagram = new Chromagram(1024, 44100)
-  const chordDetector = new ChordDetector()
+  const chromagram = new cd.Chromagram(1024, 44100)
+  const chordDetector = new cd.ChordDetector()
 
   var currentChroma;
 

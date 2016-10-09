@@ -1,3 +1,5 @@
+const Module = require('./chord_detector_lib')
+
 class Chromagram {
   constructor(frameSize, samplingFrequency) {
     this._ptr = Chromagram._constructor(frameSize, samplingFrequency)

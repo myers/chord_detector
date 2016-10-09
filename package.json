@@ -4,7 +4,9 @@
   "description": "Detect chords in audio streams",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "cd demo; watchify-server demo.js --index index.html",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo \"here\"; make ; browserify chord_detector.js -o index.js"
   },
   "repository": {
     "type": "git",
@@ -13,12 +15,18 @@
   "keywords": [
     "music",
     "chords",
-    "guitar"
+    "guitar",
+    "chromagram",
+    "dsp"
   ],
   "author": "Myers Carpenter <myers@maski.org>",
   "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/myers/chord_detector/issues"
   },
-  "homepage": "https://github.com/myers/chord_detector#readme"
+  "homepage": "https://github.com/myers/chord_detector#readme",
+  "devDependencies": {
+    "browserify": "^13.1.0",
+    "watchify-server": "^1.0.2"
+  }
 }

@@ -1,3 +1,6 @@
-/chords.js
-/chords.js.mem
+/chord_detector_lib.js
 /build/*.o
+/node_modules
+/notes
+/index.js
+
