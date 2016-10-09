@@ -9,3 +9,6 @@ build/Chromagram.o: Makefile vendor/Chord-Detector-and-Chromagram/src/Chromagram
 
 build/ChordDetector.o: Makefile vendor/Chord-Detector-and-Chromagram/src/ChordDetector.cpp
 	emcc -O3 vendor/Chord-Detector-and-Chromagram/src/ChordDetector.cpp -o build/ChordDetector.o
+
+server:
+	cd docs; python -m SimpleHTTPServer

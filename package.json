@@ -4,9 +4,8 @@
   "description": "Detect chords in audio streams",
   "main": "index.js",
   "scripts": {
-    "start": "cd demo; watchify-server demo.js --index index.html",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "make"
+    "build": "make; cd docs; browserify demo.js -o bundle.js"
   },
   "repository": {
     "type": "git",
@@ -26,7 +25,6 @@
   },
   "homepage": "https://github.com/myers/chord_detector#readme",
   "devDependencies": {
-    "browserify": "^13.1.0",
-    "watchify-server": "^1.0.2"
+    "browserify": "^13.1.0"
   }
 }
