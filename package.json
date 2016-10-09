@@ -16,13 +16,9 @@
     "guitar"
   ],
   "author": "Myers Carpenter <myers@maski.org>",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "bugs": {
     "url": "https://github.com/myers/chord_detector/issues"
   },
-  "homepage": "https://github.com/myers/chord_detector#readme",
-  "devDependencies": {
-    "speaker": "^0.3.0",
-    "web-audio-api": "^0.2.2"
-  }
+  "homepage": "https://github.com/myers/chord_detector#readme"
 }

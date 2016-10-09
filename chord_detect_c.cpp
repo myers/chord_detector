@@ -33,4 +33,30 @@ extern "C" {
             chromaDest[ii] = chroma[ii];
         }
     }
+
+
+    void *ChordDetector_constructor() {
+        ChordDetector *c = new ChordDetector();
+        return c;
+    }
+
+    void ChordDetector_destructor(ChordDetector *c) {
+        delete c;
+    }
+
+    void ChordDetector_detectChord(ChordDetector *c, double *chroma) {
+        c->detectChord(chroma);
+    }
+
+    int ChordDetector_getRootNote(ChordDetector *c) {
+        return c->rootNote;
+    }
+
+    int ChordDetector_getQuality(ChordDetector *c) {
+        return c->quality;
+    }
+
+    int ChordDetector_getIntervals(ChordDetector *c) {
+        return c->intervals;
+    }
 }

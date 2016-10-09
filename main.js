@@ -1,9 +1,10 @@
 $(function() {
-  var audioCtx = new AudioContext();
+  const audioCtx = new AudioContext();
 
-  var scriptNode = audioCtx.createScriptProcessor(1024, 1, 1);
+  const scriptNode = audioCtx.createScriptProcessor(1024, 1, 1);
 
   const chromagram = new Chromagram(1024, 44100)
+  const chordDetector = new ChordDetector()
 
   var currentChroma;
 
@@ -13,7 +14,9 @@ $(function() {
     chromagram.processAudioFrame(inputBuffer)
     if (chromagram.isReady()) {
       currentChroma = chromagram.getChromagram()
-      console.log("chromagram", currentChroma)
+      // console.log("chromagram", currentChroma)
+      chordDetector.detectChord(currentChroma)
+      console.log("chord", chordDetector.rootNote, chordDetector.quality, chordDetector.intervals)
     }
 
     // Loop through the output channels (in this case there is only one)
@@ -34,6 +37,8 @@ $(function() {
   source.onended = function() {
     source.disconnect(scriptNode);
     scriptNode.disconnect(audioCtx.destination);
+    chromagram._free()
+    chordDetector._free()
   }
 
   source.connect(scriptNode);

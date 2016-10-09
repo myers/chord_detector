@@ -37,3 +37,62 @@ Chromagram._destructor = Module.cwrap('Chromagram_destructor', null, ['number'])
 Chromagram._processAudioFrame = Module.cwrap('Chromagram_processAudioFrame', null, ['number'])
 Chromagram._isReady = Module.cwrap('Chromagram_isReady', 'number', ['number'])
 Chromagram._getChromagram = Module.cwrap('Chromagram_getChromagram', 'number', ['number', 'number'])
+
+
+class ChordDetector {
+  constructor() {
+    this._ptr = ChordDetector._constructor()
+  }
+
+  _free() {
+    ChordDetector._destructor(this._ptr)
+  }
+
+  detectChord(chroma) {
+    var size = chroma.length * chroma.BYTES_PER_ELEMENT;
+    var cArray = Module._malloc(size);
+    Module.HEAPF64.set(chroma, cArray / chroma.BYTES_PER_ELEMENT);
+    ChordDetector._detectChord(this._ptr, cArray)
+    Module._free(cArray)
+  }
+
+  /** The root note of the detected chord */
+  get rootNote() {
+    switch(ChordDetector._getRootNote(this._ptr)) {
+      case 0: return "C";
+      case 1: return "C#";
+      case 2: return "D";
+      case 3: return "D#";
+      case 4: return "E";
+      case 5: return "F";
+      case 6: return "F#";
+      case 7: return "G";
+      case 8: return "G#";
+      case 9: return "A";
+      case 10: return "A#";
+      case 11: return "B";
+    }
+  }
+
+  get quality() {
+    switch(ChordDetector._getQuality(this._ptr)) {
+      case 0: return "Minor";
+      case 1: return "Major";
+      case 2: return "Suspended";
+      case 3: return "Dominant";
+      case 4: return "Dimished5th";
+      case 5: return "Augmented5th";
+    }
+  }
+
+  get intervals() {
+    return ChordDetector._getIntervals(this._ptr)
+  }
+}
+
+ChordDetector._constructor = Module.cwrap('ChordDetector_constructor', 'number')
+ChordDetector._destructor = Module.cwrap('ChordDetector_destructor', null, ['number'])
+ChordDetector._detectChord = Module.cwrap('ChordDetector_detectChord', null, ['number'])
+ChordDetector._getRootNote = Module.cwrap('ChordDetector_getRootNote', 'number', ['number'])
+ChordDetector._getQuality = Module.cwrap('ChordDetector_getQuality', 'number', ['number'])
+ChordDetector._getIntervals = Module.cwrap('ChordDetector_getIntervals', 'number', ['number'])
