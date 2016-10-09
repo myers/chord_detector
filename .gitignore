@@ -1,2 +1,3 @@
 /chords.js
-*.o
+/chords.js.mem
+/build/*.o

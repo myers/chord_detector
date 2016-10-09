@@ -27,8 +27,10 @@ extern "C" {
         };
     }
 
-    void Chromagram_getChromagram(Chromagram *c) {
+    void Chromagram_getChromagram(Chromagram *c, double* chromaDest) {
         std::vector<double> chroma = c->getChromagram();
-        printf("chromagram %f %f %f %f %f %f %f %f %f %f %f %f\n", chroma[0], chroma[1], chroma[2], chroma[3], chroma[4], chroma[5], chroma[6], chroma[7], chroma[8], chroma[9], chroma[10], chroma[11]);
+        for(int ii = 0; ii < 12; ii++) {
+            chromaDest[ii] = chroma[ii];
+        }
     }
 }

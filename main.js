@@ -5,15 +5,15 @@ $(function() {
 
   const chromagram = new Chromagram(1024, 44100)
 
+  var currentChroma;
+
   scriptNode.onaudioprocess = function(audioProcessingEvent) {
     var inputBuffer = audioProcessingEvent.inputBuffer;
     var outputBuffer = audioProcessingEvent.inputBuffer;
-    var start = new Date().getTime();
     chromagram.processAudioFrame(inputBuffer)
-    var end = new Date().getTime();
-    console.log("processAudioFrame", start, end - start)
     if (chromagram.isReady()) {
-      chromagram.getChromagram()
+      currentChroma = chromagram.getChromagram()
+      console.log("chromagram", currentChroma)
     }
 
     // Loop through the output channels (in this case there is only one)
@@ -42,14 +42,13 @@ $(function() {
   function getData() {
     request = new XMLHttpRequest();
 
-    request.open('GET', '/samples/D-Chord.mp3', true);
+    request.open('GET', '/samples/A-Chord.mp3', true);
     request.responseType = 'arraybuffer';
     request.onload = function() {
       processAudio(request.response)
     }
     request.send()
   }
-
 
   function processAudio(audioData) {
     audioCtx.decodeAudioData(audioData, function(audioBuffer) {

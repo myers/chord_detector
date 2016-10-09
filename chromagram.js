@@ -22,7 +22,13 @@ class Chromagram {
   }
 
   getChromagram() {
-    Chromagram._getChromagram(this._ptr)
+    const dest = new Float64Array(12)
+    const cArray = Module._malloc(dest.length * dest.BYTES_PER_ELEMENT)
+    Chromagram._getChromagram(this._ptr, cArray)
+    const startOffset = cArray / dest.BYTES_PER_ELEMENT
+    dest.set(Module.HEAPF64.slice(startOffset, startOffset+dest.length))
+    Module._free(cArray)
+    return dest
   }
 }
 
@@ -30,4 +36,4 @@ Chromagram._constructor = Module.cwrap('Chromagram_constructor', 'number', ['num
 Chromagram._destructor = Module.cwrap('Chromagram_destructor', null, ['number'])
 Chromagram._processAudioFrame = Module.cwrap('Chromagram_processAudioFrame', null, ['number'])
 Chromagram._isReady = Module.cwrap('Chromagram_isReady', 'number', ['number'])
-Chromagram._getChromagram = Module.cwrap('Chromagram_getChromagram', 'number', ['number'])
+Chromagram._getChromagram = Module.cwrap('Chromagram_getChromagram', 'number', ['number', 'number'])
