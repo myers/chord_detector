@@ -1,6 +1,5 @@
-/chord_detector_lib.js
 /build/*.o
+/index.js
 /node_modules
 /notes
-/index.js
 

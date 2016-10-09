@@ -1,15 +1,12 @@
-const Module = require('./chord_detector_lib')
-
-class Chromagram {
-  constructor(frameSize, samplingFrequency) {
-    this._ptr = Chromagram._constructor(frameSize, samplingFrequency)
-  }
-
-  _free() {
+function Chromagram(frameSize, samplingFrequency) {
+  this._ptr = Chromagram._constructor(frameSize, samplingFrequency)
+}
+Chromagram.prototype = {
+  _free: function() {
     Chromagram._destructor(this._ptr)
-  }
+  },
 
-  processAudioFrame(audioBuffer) {
+  processAudioFrame: function(audioBuffer) {
     var float32Arr = audioBuffer.getChannelData(0)
     var float64Arr = new Float64Array(float32Arr)
     var size = float64Arr.length * float64Arr.BYTES_PER_ELEMENT;
@@ -17,13 +14,13 @@ class Chromagram {
     Module.HEAPF64.set(float64Arr, cArray / float64Arr.BYTES_PER_ELEMENT);
     Chromagram._processAudioFrame(this._ptr, cArray)
     Module._free(cArray)
-  }
+  },
 
-  isReady() {
+  isReady: function() {
     return Chromagram._isReady(this._ptr) == 1
-  }
+  },
 
-  getChromagram() {
+  getChromagram: function() {
     const dest = new Float64Array(12)
     const cArray = Module._malloc(dest.length * dest.BYTES_PER_ELEMENT)
     Chromagram._getChromagram(this._ptr, cArray)
@@ -31,7 +28,7 @@ class Chromagram {
     dest.set(Module.HEAPF64.slice(startOffset, startOffset+dest.length))
     Module._free(cArray)
     return dest
-  }
+  },
 }
 
 Chromagram._constructor = Module.cwrap('Chromagram_constructor', 'number', ['number', 'number'])
@@ -41,25 +38,25 @@ Chromagram._isReady = Module.cwrap('Chromagram_isReady', 'number', ['number'])
 Chromagram._getChromagram = Module.cwrap('Chromagram_getChromagram', 'number', ['number', 'number'])
 
 
-class ChordDetector {
-  constructor() {
-    this._ptr = ChordDetector._constructor()
-  }
+function ChordDetector() {
+  this._ptr = ChordDetector._constructor()
+}
 
-  _free() {
+ChordDetector.prototype = {
+  _free: function() {
     ChordDetector._destructor(this._ptr)
-  }
+  },
 
-  detectChord(chroma) {
+  detectChord: function(chroma) {
     var size = chroma.length * chroma.BYTES_PER_ELEMENT;
     var cArray = Module._malloc(size);
     Module.HEAPF64.set(chroma, cArray / chroma.BYTES_PER_ELEMENT);
     ChordDetector._detectChord(this._ptr, cArray)
     Module._free(cArray)
-  }
+  },
 
   /** The root note of the detected chord */
-  get rootNote() {
+  rootNote: function() {
     switch(ChordDetector._getRootNote(this._ptr)) {
       case 0: return "C";
       case 1: return "C#";
@@ -74,9 +71,9 @@ class ChordDetector {
       case 10: return "A#";
       case 11: return "B";
     }
-  }
+  },
 
-  get quality() {
+  quality: function() {
     switch(ChordDetector._getQuality(this._ptr)) {
       case 0: return "Minor";
       case 1: return "Major";
@@ -85,9 +82,9 @@ class ChordDetector {
       case 4: return "Dimished5th";
       case 5: return "Augmented5th";
     }
-  }
+  },
 
-  get intervals() {
+  intervals: function() {
     return ChordDetector._getIntervals(this._ptr)
   }
 }
@@ -98,3 +95,6 @@ ChordDetector._detectChord = Module.cwrap('ChordDetector_detectChord', null, ['n
 ChordDetector._getRootNote = Module.cwrap('ChordDetector_getRootNote', 'number', ['number'])
 ChordDetector._getQuality = Module.cwrap('ChordDetector_getQuality', 'number', ['number'])
 ChordDetector._getIntervals = Module.cwrap('ChordDetector_getIntervals', 'number', ['number'])
+
+exports.Chromagram = Chromagram
+exports.ChordDetector = ChordDetector
