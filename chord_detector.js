@@ -96,5 +96,7 @@ ChordDetector._getRootNote = Module.cwrap('ChordDetector_getRootNote', 'number',
 ChordDetector._getQuality = Module.cwrap('ChordDetector_getQuality', 'number', ['number'])
 ChordDetector._getIntervals = Module.cwrap('ChordDetector_getIntervals', 'number', ['number'])
 
-exports.Chromagram = Chromagram
-exports.ChordDetector = ChordDetector
+exports = {
+  Chromagram: Chromagram,
+  ChordDetector: ChordDetector
+}
