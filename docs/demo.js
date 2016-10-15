@@ -43,18 +43,19 @@ $(function() {
   gradient.addColorStop(0.75, '#2ecc71');
   gradient.addColorStop(0.25, '#f1c40f');
   gradient.addColorStop(0, '#e74c3c');
-
+  visualizationCtx.font="20px Georgia";
   notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
   function updateVisualization() {
-    visualizationCtx.clearRect(0, 0, 800, 256);
+    visualizationCtx.clearRect(0, 0, 480, 250);
 
     for (let i = 0; i < currentChroma.length; i++) {
       const value = currentChroma[i];
       visualizationCtx.fillStyle = gradient;
-      visualizationCtx.fillRect(i * 65, 246, 10, value * -7);
+      // the max value we've seen in a chroma is >50
+      visualizationCtx.fillRect(i * 40, 250, 39, value * -5);
 
       visualizationCtx.fillStyle = 'black';
-      visualizationCtx.fillText(notes[i], i * 65, 256);
+      visualizationCtx.fillText(notes[i], (i * 40)+3, 250);
     }
 
     requestAnimationFrame(updateVisualization);
