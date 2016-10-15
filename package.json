@@ -1,6 +1,6 @@
 {
   "name": "chord_detector",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Detect chords in audio streams",
   "main": "index.js",
   "scripts": {
