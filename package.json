@@ -1,6 +1,6 @@
 {
   "name": "chord_detector",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Detect chords in audio streams",
   "main": "index.js",
   "scripts": {
@@ -28,6 +28,5 @@
     "browserify": "^13.1.0",
     "webworkify": "^1.4.0"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
