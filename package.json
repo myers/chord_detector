@@ -25,6 +25,9 @@
   },
   "homepage": "https://github.com/myers/chord_detector#readme",
   "devDependencies": {
-    "browserify": "^13.1.0"
+    "browserify": "^13.1.0",
+    "webworkify": "^1.4.0"
+  },
+  "dependencies": {
   }
 }

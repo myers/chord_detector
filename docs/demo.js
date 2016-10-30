@@ -1,13 +1,12 @@
-const cd = require("../index.js")
+var currentChroma = new Float32Array(12)
+
+var webworkify = require('webworkify');
+var chromagramWorker = webworkify(require('./worker.js'))
 
 $(function() {
   const audioCtx = new AudioContext();
 
-  var chromagram
-  var source
-  var currentChroma = new Float32Array(12)
-  const chordDetector = new cd.ChordDetector()
-  var output
+  var output = $('#chord-detection')
 
   $('audio').on('play', function(event) {
     // pause and reset other elements
@@ -17,22 +16,14 @@ $(function() {
       el.currentTime = 0
     })
 
-    output = $('#chord-detection')
-
-    if (chromagram) {
-      chromagram._free()
-    }
-    chromagram = new cd.Chromagram(1024, 44100)
-
     source = audioCtx.createMediaElementSource(this)
     $(this).on('ended', () => {
       currentChroma.fill(0)
-      source.disconnect(scriptNode)
-      scriptNode.disconnect(audioCtx.destination)
+      source.disconnect()
       this.currentTime = 0
     })
     source.connect(scriptNode)
-    scriptNode.connect(audioCtx.destination)
+    source.connect(audioCtx.destination)
   })
 
 
@@ -46,6 +37,8 @@ $(function() {
   visualizationCtx.font="20px Georgia";
   notes = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
   function updateVisualization() {
+    requestAnimationFrame(updateVisualization);
+
     visualizationCtx.clearRect(0, 0, 480, 250);
 
     for (let i = 0; i < currentChroma.length; i++) {
@@ -57,25 +50,17 @@ $(function() {
       visualizationCtx.fillStyle = 'black';
       visualizationCtx.fillText(notes[i], (i * 40)+3, 250);
     }
-
-    requestAnimationFrame(updateVisualization);
   }
-  updateVisualization();
+  updateVisualization()
 
+  chromagramWorker.addEventListener('message', function (ev) {
+    currentChroma = ev.data.currentChroma
+    output.html("Is it " + ev.data.rootNote + " " + ev.data.quality + " " + ev.data.intervals + "?")
+  })
   const scriptNode = audioCtx.createScriptProcessor(1024, 1, 1)
-  scriptNode.onaudioprocess = function(audioProcessingEvent) {
-    var inputBuffer = audioProcessingEvent.inputBuffer;
-    var outputBuffer = audioProcessingEvent.outputBuffer;
-    // Loop through the output channels (in this case there is only one)
-    for (var channel = 0; channel < outputBuffer.numberOfChannels; channel++) {
-      outputBuffer.copyToChannel(inputBuffer.getChannelData(channel), channel)
-    }
-
-    chromagram.processAudioFrame(inputBuffer)
-    if (chromagram.isReady()) {
-      currentChroma = chromagram.getChromagram()
-      chordDetector.detectChord(currentChroma)
-      output.html("Is it " + chordDetector.rootNote() + " " + chordDetector.quality() + " " +  chordDetector.intervals() + "?")
-    }
+  scriptNode.onaudioprocess = function(event) {
+    var audioData = event.inputBuffer.getChannelData(0)
+    chromagramWorker.postMessage({audioData: audioData, sentAt: performance.now()})
   }
+  scriptNode.connect(audioCtx.destination)
 })

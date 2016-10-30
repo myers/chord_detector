@@ -6,9 +6,8 @@ Chromagram.prototype = {
     Chromagram._destructor(this._ptr)
   },
 
-  processAudioFrame: function(audioBuffer) {
-    var float32Arr = audioBuffer.getChannelData(0)
-    var float64Arr = new Float64Array(float32Arr)
+  processAudioFrame: function(channelData) {
+    var float64Arr = new Float64Array(channelData)
     var size = float64Arr.length * float64Arr.BYTES_PER_ELEMENT;
     var cArray = Module._malloc(size);
     Module.HEAPF64.set(float64Arr, cArray / float64Arr.BYTES_PER_ELEMENT);
@@ -96,7 +95,7 @@ ChordDetector._getRootNote = Module.cwrap('ChordDetector_getRootNote', 'number',
 ChordDetector._getQuality = Module.cwrap('ChordDetector_getQuality', 'number', ['number'])
 ChordDetector._getIntervals = Module.cwrap('ChordDetector_getIntervals', 'number', ['number'])
 
-exports = {
+module.exports = {
   Chromagram: Chromagram,
   ChordDetector: ChordDetector
 }
